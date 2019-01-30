@@ -1,0 +1,12 @@
+ELECTRON
+keyboard event not focus
+https://github.com/electron/electron/blob/master/docs/api/global-shortcut.md
+
+selected text 
+tip: https://discuss.atom.io/t/how-to-get-currently-selected-text-from-within-electron-desktop-application/24422
+riesenie: https://github.com/electron/electron/issues/2538  (userSelection)
+
+frame less widnow: 
+https://www.youtube.com/watch?v=wiblQhPqXdY
+
+tray: https://github.com/hokein/electron-sample-apps/tree/master/tray
