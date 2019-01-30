@@ -10,3 +10,7 @@ frame less widnow:
 https://www.youtube.com/watch?v=wiblQhPqXdY
 
 tray: https://github.com/hokein/electron-sample-apps/tree/master/tray
+
+dobre priklady: 
+https://electronjs.org/blog/simple-samples#activity-monitor
+https://coursetro.com/posts/code/120/Creating-and-Using-Windows-in-Electron

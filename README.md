@@ -1,8 +1,10 @@
 # Translator 
 ## TODO list:
-* spravit strukturu suborov (Roman)
-* tray icon
-* nabindovat klavesove skratky
-* vyskakovacie okno
+* spravit strukturu suborov
+* ~~tray icon~~
+* ~~nabindovat klavesove skratky~~
+* ~~vyskakovacie okno~~
+* vytvorit ikonu na tray
+* refactor main.js
 
-### Dokumentacia doc
+### Dokumentacia - uzitocne podklady pre tvorbu 

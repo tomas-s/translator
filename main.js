@@ -1,53 +1,67 @@
-const electron = require('electron')
-// Module to control application life.
-const app = electron.app
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+//refactoring by https://github.com/kevinsawicki/tray-example/blob/master/main.js
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+const { app, Tray, Menu, BrowserWindow, globalShortcut } = require('electron');
+const path = require('path');
 
-function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+const iconPath = path.join(__dirname, 'resources/icon/icon.png');
+let appIcon = null;
+let win = null;
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`)
+app.on('ready', function () {
+    win = new BrowserWindow({ show: false });
+    appIcon = new Tray(iconPath);
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+    //registry global shoutcast
+    const ret = globalShortcut.register('CommandOrControl+X', () => {
+        createWindow();
+      })
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null
+    var contextMenu = Menu.buildFromTemplate([
+        {
+            label: 'Dictionary'
+        },
+        {
+            label: 'Search history',
+            click: function () {
+                createWindow();
+            }
+        },
+        {
+            label: 'Settings'
+        },
+        {
+            label: 'Toggle DevTools',
+            click: function () {
+                win.show();
+                win.toggleDevTools();
+            }
+        },
+        {
+            label: 'Quit',
+            accelerator: 'Alt+Q',
+            selector: 'terminate:',
+            click: function () {
+                app.quit();
+            }
+        }
+    ]);
+    appIcon.setToolTip('Dictionary app');
+    appIcon.setContextMenu(contextMenu);
+})
+
+app.on('will-quit', () => {
+    // Unregister a shortcut.
+    globalShortcut.unregister('CommandOrControl+X')
+  
+    // Unregister all shortcuts.
+    globalShortcut.unregisterAll()
   })
+;
+
+function createWindow(){
+    const modalPath = path.join('file://', __dirname, 'src/window.html')
+    let win = new BrowserWindow({ frame: false, width: 400, height: 200 })
+    win.on('close', function () { win = null })
+    win.loadURL(modalPath)
+    win.show()
 }
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
-
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
